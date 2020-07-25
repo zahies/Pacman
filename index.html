@@ -3,19 +3,358 @@
 	<head>
 		<script src="./jquery-3.4.1.slim.min.js"></script>
 		<script type="text/javascript" src="./app.js"></script>
+		<script type="text/javascript" src="./menu.js"></script>
+		<script type="text/javascript" src="./register.js"></script>
+		<script type="text/javascript" src="./settings.js"></script>
+		<script type="text/javascript" src="./monstersModel.js"></script>
+		<script type="text/javascript" src="./cherryModel.js"></script>
+		<script type="text/javascript" src="./extraLifeModel.js"></script>
+		<script type="text/javascript" src="./pacmanModel.js"></script>
+		<script type="text/javascript" src="./rottenAppleModel.js"></script>
+		<script type="text/javascript" src="./keysModel.js"></script>
+		<script type="text/javascript" src="./kr"></script>
+		<link rel="stylesheet" type="text/css" href="style.css" />
+		<nav id="navbar" href="javascript:void(0)" style="display: none">
+			<ul>
+				<li id="user"><a id="currentUser">Hello, guest</a></li>
+				<li id="about"><a onclick="openDialog(),closeModal();">About</a></li>
+				<li id="logOut" style="float: right"><a onclick="logOut()">Log Out</a></li>
+			</ul>
+		</nav>
 	</head>
 
 	<body>
-		<div id="score">
-			<label for="lblScore">SCORE:</label>
-			<input id="lblScore" type="text" />
+		<div id="aboutModal" class="modal"  style="display: none">
+			<!-- Modal content -->
+			<div class="modal-content-about">
+				<div class="imgcontainer">
+					<span onclick="cancelbtn(login)" class="close" title="Close Modal">&times;</span>
+					<!--					<img src="img_avatar2.png" alt="Avatar" class="avatar">-->
+				</div>
+				<p>The student that developed this game are:
+					<br>
+					Zahi Kapri - ID: 307881276
+					<br>
+					Itzhak Finkelstein - ID: 203640271
+					<br>
+					Instructions:
+					<br>
+					Your goal is to reach 100 Points in the limited time without getting getting eaten by the monsters.
+					<br>
+					If your are in trouble search for the heart to get extra life.
+					<br>
+					You can also get extra 50 points by eating the cherry but beware of the rotten apple or else another monster might appear!
+					<br>
+					</p>
+			</div>
+
 		</div>
-		<div id="time">
-			<label for="lblTime">TIME:</label>
-			<input id="lblTime" type="text" />
+		<div id="wrapper" align="center">
+			<div id="register" class="allDivs" style="display: none">
+				<span onclick="cancelbtn(register)" class="close" title="Close Modal">&times;</span>
+				<form id="registerForm" class="modal-content animate" >
+					<div class="container">
+						<div class="imgcontainer">
+							<span onclick="cancelbtn(register);changeDisplay(welcome)" class="close" title="Close Modal">&times;</span>
+							<!--					<img src="img_avatar2.png" alt="Avatar" class="avatar">-->
+						</div>
+						<img src="resources/life.png">
+						<p>Please fill in this form to create an account.</p>
+						<hr>
+
+						<input class="formInput" id="uname" type="text" placeholder="Enter Username" name="uname" required>
+						<span id="unameError" class= "error-message"></span>
+
+
+						<input class="formInput" id="password" type="password" placeholder="Enter Password" name="psw" required>
+						<span id="passwordError" class= "error-message"></span>
+
+
+						<input  class="formInput" id="fullName" type="text" placeholder="Enter full name" name="fullname" required>
+						<span id="fullNameError" class= "error-message"></span>
+
+
+						<input class="formInput" id="email" type="text" placeholder="Enter Email" name="email" required>
+						<span id="emailError" class= "error-message"></span>
+						<div class="clearfix">
+							<button class="formBtn" type="submit" onclick="saveDetails()" class="signupbtn">Sign Up</button>
+							<button type="button" onclick="cancelbtn(register);changeDisplay(welcome)" class="cancelbtn">Cancel</button>
+						</div>
+					</div>
+				</form>
+			</div>
+
+			<div id="login" class="allDivs" class="modal" style="display: none">
+				<form id="loginForm" class="modal-content animate" style="border-radius: 25px 25px 25px 25px">
+					<div class="imgcontainer">
+						<span onclick="cancelbtn(login);changeDisplay(welcome)" class="close" title="Close Modal">&times;</span>
+						<!--					<img src="img_avatar2.png" alt="Avatar" class="avatar">-->
+					</div>
+					<img src="resources/cherry.png">
+					<div class="container">
+						<input class="formInput" id="uNameLogin" type="text" placeholder="Enter Username" name="uname" required>
+						<input class="formInput" id="passLogin" type="password" placeholder="Enter Password" name="psw" required>
+						<span id="passLoginError" class= "error-message"></span>
+						<button class="formBtn" type="submit" onclick="checkLoginDetails()">Login</button>
+						<button type="button" onclick="cancelbtn(login);changeDisplay(welcome)" class="cancelbtn" >Cancel</button>
+					</div>
+
+				</form>
+			</div>
+			<div align=center id="welcome" class="allDivs" style="display: block">
+				<img src="resources/pacmanLogo.png" align="center" style="margin-top: 20px">
+				<br>
+				<img src="resources/pacman.gif" align="center" height="400" style="margin: 100px">
+				<br>
+				<button  class="welcome" type="button" id="loginButton" onclick="changeDisplay(login)">Login</button>
+				<button  class="welcome" type="button" id="registerButton" onclick="changeDisplay(register)">Register</button>
+<!--				<p style="color: white" style="font-size: small; font-family: Lucida Sans,sans-serif">© Made By Zahi Kapri - 307881276 and Itzhak Finkelstein - 203640271</p>-->
+			</div>
+
+
+
+			<div id="settingPage" class="allDivs" style="display: none" align="center">
+				<br>
+				<img src="resources/pacmanLogo.png">
+
+				<form id="gameSettings" align="center">
+					<img src="resources/settings.png">
+					<div  class="divTable">
+						<div class="divTableBody">
+							<div class="divTableRow">
+								<div class="divTableCell" align="center">
+
+								</div>
+								<div class="divTableCell" align="top">
+									<h1> Game Settings </h1>
+									<br>
+									<!--time setting-->
+									<div align="center">
+										<div id="timeValueBox" class="valueBox" align="center">
+											<img id="clockLogo" src="resources/clock2.png">
+											<div id="timeValue">60</div>
+										</div>
+										<div id="timeSetting" class="setting" align="center">
+											Choose Game Time
+											<input id="gameTime" class="slider" type="range" value="60" min="60" max="10000" required onchange="updateTextInputTime(this.value)">
+										</div>
+									</div>
+									<br>
+									<!--Monsters setting-->
+									<div align="center">
+										<div id="monstersValueBox" class="valueBox" align="center">
+											<img id="monsterLogo "src="resources/monstersLogo.png">
+											<div id="monstersValue">1</div>
+										</div>
+										<div id="monstersSetting" class="setting" align="center">
+											Choose Number Of Monsters
+											<input id="numOfMonsters" class="slider" type="range" value="1" min="1" max="4" required onchange="updateTextInputMonsters(this.value)">
+										</div>
+									</div>
+									<br>
+
+									<!--Balls setting-->
+									<div align="center">
+
+										<div id="ballsValueBox" class="valueBox" align="center">
+											<img id="ballLogo" src="resources/ball.png">
+											<div id="ballsValue">50</div>
+										</div>
+										<div id="ballsSetting" class="setting" align="center">
+											Choose Number of Balls
+											<input id="numOfBalls" class="slider" type="range" value="50" min="50" max="90" required onchange="updateTextInputBalls(this.value)">
+										</div>
+									</div>
+
+									<div align="center">
+										<h1 id="chooseColors">Choose Colors</h1>
+										<div class="divTable">
+											<div class="divTableBody">
+												<div class="divTableRow">
+													<div class="divTableCell">5 Points Color</div>
+													<div class="divTableCell">15 Points Color</div>
+													<div class="divTableCell">25 Points Color</div>
+												</div>
+												<div class="divTableRow">
+													<div class="divTableCell"><input id="5PointsColor" type="color" value="#ff0000" required></div>
+													<div class="divTableCell"><input id="15PointsColor" type="color" value="#0000ff"  required></div>
+													<div class="divTableCell"><input id="25PointsColor" type="color" value="#00ff00"  required></div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<br>
+
+									<!--Keys Settings-->
+									<div align="center">
+										<h1>Choose Keys</h1>
+										<div class="divTable">
+											<div class="divTableBody">
+												<div class="divTableRow">
+													<div class="divTableCell"><img src="resources/left.png"></div>
+													<div class="divTableCell"><img src="resources/up.png"></div>
+													<div class="divTableCell"><img src="resources/down.png"></div>
+													<div class="divTableCell"><img src="resources/right.png"></div>
+												</div>
+												<div class="divTableRow">
+													<div class="divTableCell"><input class="keyInput" id="leftKey" placeholder="Move Left" type="text" maxlength="1" onkeydown="updateKey(event,'left')"></div>
+													<div class="divTableCell"><input class="keyInput" id="upKey" placeholder="Move Up" type="text" maxlength="1" onkeydown="updateKey(event,'up')"></div>
+													<div class="divTableCell"><input class="keyInput" id="downKey" placeholder="Move Down" type="text" maxlength="1" onkeydown="updateKey(event,'down')"></div>
+													<div class="divTableCell"><input class="keyInput" id="rightKey" placeholder="Move Right" type="text" maxlength="1" onkeydown="updateKey(event,'right')"></div>
+												</div>
+												<div class="divTableRow">
+													<div class="divTableCell" ><img id="leftKeyImg" src="resources/keys/37.png"></div>
+													<div class="divTableCell" ><img id="upKeyImg" src="resources/keys/38.png"></div>
+													<div class="divTableCell" ><img id="downKeyImg" src="resources/keys/40.png"></div>
+													<div class="divTableCell" ><img id="rightKeyImg" src="resources/keys/39.png"></div>
+													</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="divTableRow" align="center" style="width: 25%">
+								<div class="divTableCell">
+									<div class="buttonBox" style="width: 256px" style="height: 256px">
+										<button id="randomBtn" type="button" style="background-image: url(resources/random.png)" title="Random Settings" class="btnSetting" onclick="fillFormRandomly()"></button>
+									</div>
+								</div>
+								<div class="divTableCell">
+									<div class="buttonBox" style="width: 256px" style="height: 256px">
+										<button id="resetBtn" type="reset" style="background-image: url(resources/reset.png)" title="Reset Settings" class="btnSetting" onclick="resetSettings()"></button>
+									</div>
+								</div>
+								<div class="divTableCell">
+									<div class="buttonBox" style="width: 256px" style="height: 256px">
+										<button id="muteBtn" type="button" style="background-image: url(resources/unmute.png)" onclick="muteMusic()" class="btnSetting" ></button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+					<br>
+				</form>
+				<button class="start" type="submit" onclick="startGame()">Start Game</button>
+			</div>
+			<div id="mainContent" class="allDivs" style="display: none" align="center">
+				<div align="center">
+					<div class="tg" id="leftSetting" align="center">
+						<div class="divTableRowG">
+							<div class="divTableCellG">
+								<img id="healthBar" src="resources/health5.png">
+							</div>
+							<div class="divTableCellG">
+								<label style="color: #f1f1f1" for="lblTime">LIFE:</label>
+							</div>
+							<div class="divTableCellG">
+								<div id="life" style="color: #f1f1f1">5</div>
+							</div>
+						</div>
+						<div class="divTableRowG">
+							<div class="divTableCellG">
+								<img src="resources/clock2.png">
+							</div>
+							<div class="divTableCellG">
+								<label style="color: #f1f1f1" for="lblTime">TIME:</label>
+							</div>
+							<div class="divTableCell">
+								<div id="lblTime"  style="color: #f1f1f1"></div>
+							</div>
+						</div>
+						<div class="divTableRowG">
+							<div class="divTableCellG">
+								<img src="resources/ball.png">
+							</div>
+							<div class="divTableCellG">
+								<label style="color: #f1f1f1" for="lblScore">SCORE:</label>
+							</div>
+							<div class="divTableCellG">
+								<div id="lblScore" style="color: #f1f1f1" >0</div>
+							</div>
+						</div>
+
+
+					</div>
+				</div>
+
+				<div id="pacmanGame" class="tg">
+					<canvas id="canvas" height="725" width="725" style="margin-top:  40px"></canvas>
+				</div>
+
+				<div id="rightSetting" class="tg">
+					<div class="divTableRowG" align="center">
+						<button id="StartNewGame" onclick="startNewGame()">Start New Game</button>
+					</div>
+					<div class="divTableRowG">
+						<div class="divTableCellG">
+							<img class="monsterLogo "src="resources/monn.png" >
+						</div>
+						<div class="divTableCellG">
+							<div id="numOfMonstersInGame" style="alignment: top"></div>
+						</div>
+					</div>
+					<div class="divTableRowG">
+						<div class="divTableCellG">
+							<div class="divTableCellG"><input id="5PointsColorG" type="color" value="#ff0000" required></div>
+						</div>
+						<div class="divTableCellG">
+							<div>5 Points</div>
+						</div>
+					</div>
+					<div class="divTableRowG">
+						<div class="divTableCellG">
+							<div class="divTableCellG"><input id="15PointsColorG" type="color" value="#0000ff"  required></div>
+						</div>
+						<div class="divTableCellG">
+							<div>15 Points</div>
+						</div>
+					</div>
+					<div class="divTableRowG">
+						<div class="divTableCellG">
+							<div class="divTableCellG"><input id="25PointsColorG" type="color" value="#00ff00"  required></div>
+						</div>
+						<div class="divTableCellG">
+							<div>25 Points</div>
+						</div>
+					</div>
+					<div class="divTableRowG">
+						<div class="divTableCellG">
+							<div class="divTableCellG">Move Up: </div>
+						</div>
+						<div class="divTableCellG">
+							<img id="inGameKeyUp" src="resources/keys/38.png">
+						</div>
+					</div>
+					<div class="divTableRowG">
+						<div class="divTableCellG">
+							<div class="divTableCellG">Move Down: </div>
+						</div>
+						<div class="divTableCellG">
+							<img id="inGameKeyDown" src="resources/keys/40.png">
+						</div>
+					</div>
+					<div class="divTableRowG">
+						<div class="divTableCellG">
+							<div class="divTableCellG">Move Right: </div>
+						</div>
+						<div class="divTableCellG">
+							<img id="inGameKeyRight" src="resources/keys/39.png">
+						</div>
+					</div>
+					<div class="divTableRowG">
+						<div class="divTableCellG">
+							<div class="divTableCellG">Move Left: </div>
+						</div>
+						<div class="divTableCellG">
+							<img id="inGameKeyLeft" src="resources/keys/37.png">
+						</div>
+					</div>
+				</div>
+
+			</div>
 		</div>
-		<div id="game">
-			<canvas id="canvas" height="600" width="600"></canvas>
-		</div>
+
 	</body>
 </html>
